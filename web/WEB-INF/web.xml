@@ -7,7 +7,7 @@
     <!-- 配置应用名称 -->
     <display-name>newProject</display-name>
 
-    <!-- 配置欢迎页面 -->
+    <!-- 配置欢迎页面（首页），按照从上到下顺序显示 -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
