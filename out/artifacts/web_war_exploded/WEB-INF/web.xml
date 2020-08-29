@@ -4,5 +4,25 @@
            xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 		  http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
            version="3.1">
+    <!-- 配置应用名称 -->
+    <display-name>newProject</display-name>
 
+    <!-- 配置欢迎页面 -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <!-- 配置自定义的 Servlet -->
+    <servlet>
+        <servlet-name>Hello1</servlet-name>
+        <servlet-class>Servlet.HelloServlet1</servlet-class>
+    </servlet>
+
+    <!-- Servlet 访问方式的映射，Servlet 的访问方式 -->
+    <servlet-mapping>
+        <servlet-name>Hello1</servlet-name>
+
+        <!-- 上面 Servlet 的访问方式，即 Hello1 -->
+        <url-pattern>hello1</url-pattern>
+    </servlet-mapping>
 </web-app>

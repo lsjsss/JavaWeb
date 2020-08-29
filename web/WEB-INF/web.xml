@@ -25,4 +25,5 @@
         <!-- 上面 Servlet 的访问方式，即 Hello1 -->
         <url-pattern>hello1</url-pattern>
     </servlet-mapping>
+
 </web-app>
