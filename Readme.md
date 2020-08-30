@@ -110,7 +110,7 @@ Serlvet 功能：
  - 接收处理用户的 Http 请求
  - 给用户 HTTP 响应
 
-## 2.1.2 Servlet体系结构
+## 2.2 Servlet体系结构
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/2020083000581765.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDM0MDEyOQ==,size_16,color_FFFFFF,t_70)
 
  - javax.servlet 包
@@ -129,29 +129,176 @@ Serlvet 功能：
 		- **doGet(HttpServletRequest req,HttpServletResponse resp)**：此方法被本类的 service() 方法调用，用来处理一个 HTTP GET 操作。
 		- **doPost(HttpServletRequest req,HttpServletResponse resp)**：此方法被本类的 service() 方法调用，用来处理一个 HTTP POST 操作。
  - javax.servlet.http 包
- - Servlet 的生命周期
-	 - 参考 ppt 和教材和视频
- - Sevlet的创建过程
-	 - 两种方式：传统的通过 web.xml 进行配置；注解方式配置
-	 - web.xml 方式配置
 
-		```html
-		<!--配置自定义的Servlet,需要2部分内容-->
-		<servlet>
-			<servlet-name>Hello1</servlet-name>
-			<servlet-class>com.jsj.yun1.ch2.HelloServlet1</servlet-class>
-		</servlet>
-		
-		<!-- Servlet访问方式的映射﹔哪个Servlet需要用什么样的方式来访问-->
-		<servlet-mapping>
-			<servlet-name>Hello1</servlet-name>
-			
-			<!--用什么样的访问方式来访问上面的servlet，kHe1lo1 -->
-			<url-pattern>/hello1</ur1-pattern>
-		</servlet-mapping>
-		```
 
-	 - 注解方式配置
+
+
+## 2.3 Servlet 生命周期
+(选择、判断)
+ - Servlet 生命周期是指 Servlet 实例从创建（ **init() 方法**）到响应客户请求（ **doPost()、doGet() 方法**），直至销毁（ **destory() 方法** ）的过程。
+ - Servlet 程序本身**不直接**在 Java 虚拟机上运行，由 **Servlet 容器（ Tomcat ）**负责管理其整个生命周期。
+ - 在 Servlet 生命周期中，会经过创建、初始化、服务可用、服务不可用、处理请求、终止服务、销毁七种状态。
+ - Servlet 生命周期可分为四个阶段：加载和实例化、初始化、处理请求、销毁。
+
+Servlet 生命周期中七种状态间的转换关系以及转换过程的四个阶段：
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830220749452.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDM0MDEyOQ==,size_16,color_FFFFFF,t_70)
+
+### 2.3.1 第一阶段：加载和实例化
+ - Servlet 的创建是指加载和实例化两个过程
+ - Servlet 容器在如下时刻加载和实例化一个 Servlet：
+	 - 在服务器运行中，**客户机首次向Servlet发出请求时**（创建对象）；
+	 - 重新装入 Servlet 时，如：**服务器重新启动、Servlet 被修改**；
+	 - 在为 Servlet 配置了自动装入选项（load-on-startup）时，服务器在启动时会自动装入此 Servlet。
+
+
+### 2.3.2 第二阶段：初始化
+ - Servlet 实例化后，Servlet 容器将调用 Servlet 的 init(ServletConfig config) 方法来对 Servlet 实例进行初始化（**容器自动进行初始化**）；
+ - 如果初始化没有问题，Servlet 在 Web 容器中会处于服务可用状态；如果初始化失败，Servlet 容器会从运行环境中清除掉该实例；
+ - 当 Servlet 运行出现异常时，Servlet 容器会使该实例变为服务不可用状态。Web 程序维护人员可以设置 Servlet，使其成为服务不可用状态，或者从服务不可用状态恢复成服务可用状态。
+
+### 2.3.3 第三阶段：处理请求
+ - 服务器接收到客户端请求，会为该请求创建一个“请求”对象和一个“响应”对象并调用 **service() 方法**，service() 方法再调用其他方法来处理请求；
+ - 在Servlet生命周期中，service() 方法可能被**多次调用**。当多个客户端同时访问某个 Servlet 的 service() 方法时，**服务器会`为每个请求创建一个线程`，这样可以**并行**处理多个请求，减少请求处理的等待时间，提高服务器的响应速度**。但同时也要注意对同一对象的并发访问问题。
+
+### 2.3.4 第四阶段：销毁
+ - 当 Servlet 容器需要终止 Servlet（比如 Web 服务器即将被关掉或需要出让资源），它会先调用 Servlet 的 destroy() 方法使其释放正在使用的资源。在 Servlet 容器**调用 destroy() 方法**之前，**必须让当前正在执行 service() 方法的任何线程完成执行**，或者超过了服务器定义的时间限制。在 destroy() 方法完成后， Servlet 容器必须释放 Servlet 实例以便被垃圾回收。
+
+
+## 2.4 创建一个 Servlet 文件
+ - 步骤1
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830143228866.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDM0MDEyOQ==,size_16,color_FFFFFF,t_70)
+
+ - 步骤2
+Java package：包名
+Class name：类名
+Superclass：使用的父类
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830143521371.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDM0MDEyOQ==,size_16,color_FFFFFF,t_70)
+
+ - 步骤3
+Name：Servlet 名称（别名或代号）
+Description：描述
+URL mappings：访问方式
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2020083014381629.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDM0MDEyOQ==,size_16,color_FFFFFF,t_70)
+
+ - 步骤4
+ - 初始化文件
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830144104338.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDM0MDEyOQ==,size_16,color_FFFFFF,t_70)
+
+
+
+
+## 2.5 Sevlet 的创建过程
+ - 两种方式：传统的通过 web.xml 进行配置；注解方式配置
+### 2.5.1 web.xml 方式配置
+#### 步骤1
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2020083022164721.png)
+
+#### 步骤2：创建 Java 文件
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830221729580.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDM0MDEyOQ==,size_16,color_FFFFFF,t_70)
+#### 步骤3：在 Java 文件中编写以下代码
+```java
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/** Servlet 创建：web.xml 方式配置 */
+public class HelloServlet1 extends HttpServlet {
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		super.doGet(req, resp);
+		System.out.println("welcome");
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		super.doPost(req, resp);
+	}
+}
+```
+
+#### 步骤4：编辑 /WEB-INF 目录下的 web.xml 文件
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830223009109.png)
+
+```html
+<!-- 配置应用名称 -->
+<display-name>newProject</display-name>
+
+<!-- 配置欢迎页面 -->
+<welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+</welcome-file-list>
+
+<!----------  以下内容需要自己添加  ------------->
+<!-- 配置自定义的Servlet，需要2部分内容  第一部分：-->
+<servlet>
+	<!-- Servlet 定义的名称与 HelloServlet1.java 中的类 HelloServlet1 对应 -->
+	<servlet-name>Hello1</servlet-name>
+
+	<!-- 写入上方所对应的名称所对应的类的名称，详细包名，具有对应关系，声明 com.servlet.c1.HelloServlet1 为 Servlet 文件 -->
+	<servlet-class>com.servlet.c1.HelloServlet1</servlet-class>
+</servlet>
+
+<!-- Servlet 访问方式的映射：哪个Servlet需要用什么样的方式来访问  第二部分：-->
+<servlet-mapping>
+	<!-- servlet-name 与上方 servlet-name 标签中的相同 -->
+	<servlet-name>Hello1</servlet-name>
+	
+	<!-- 定义用什么样的访问方式来访问上面的 servlet（Hello1），访问方式：http://localhost:8080/newProject/hello1 -->
+	<url-pattern>/hello1</url-pattern>
+</servlet-mapping>
+```
+
+#### 步骤5：访问页面
+通过链接访问 **localhost:8080/newProject/hello1**，访问后可检查控制台输出信息
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830224740365.png)
+
+
+### 2.5.2 注解方式配置（常用）
+#### 步骤1
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2020083022164721.png)
+#### 步骤2：创建 Java 文件
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830225006756.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDM0MDEyOQ==,size_16,color_FFFFFF,t_70)
+
+#### 步骤3：在 Java 文件中编写以下代码
+```java
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/** 添加注解，对文件进行解释，表示 HelloServlet2 类为 Servlet 文件
+ * name：定义的 Servlet 名称
+ * urlPatterns：访问方式：http://localhost:8080/newProject/hello2
+ */
+@WebServlet(name = "hello2", urlPatterns = "/hello2")
+public class HelloServlet2 extends HttpServlet {
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		super.doGet(req, resp);
+		System.out.println("welcome2");
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		super.doGet(req, resp);
+	}
+}
+```
+
+#### 步骤4：访问页面
+通过链接访问 **localhost:8080/newProject/hello2**，访问后可检查控制台输出信息
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830230358326.png)
+
+### 2.4.3 注解 @WebServlet 的属性及描述
 
 类型 | 属性名 | 描述
 :-- | :-- | :--
@@ -163,37 +310,6 @@ initParams | WeblnitParam[] | 指定一组Servlet初始化参数，为可选项
 asyncSupported | boolean | 声明Servlet是否支持异步操作模式，默认为false
 description | String | 指定该Servlet的描述信息
 displayName | String | 指定该Servlet的显示名，通常配合工具使用
-
-
-## 2.1.3 创建一个 Servlet 文件
- - 步骤1
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830143228866.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDM0MDEyOQ==,size_16,color_FFFFFF,t_70#pic_center)
-
- - 步骤2
-Java package：包名
-Class name：类名
-Superclass：使用的父类
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830143521371.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDM0MDEyOQ==,size_16,color_FFFFFF,t_70#pic_center)
-
- - 步骤3
-Name：Servlet 名称（别名或代号）
-Description：描述
-URL mappings：访问方式
-![在这里插入图片描述](https://img-blog.csdnimg.cn/2020083014381629.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDM0MDEyOQ==,size_16,color_FFFFFF,t_70#pic_center)
-
- - 步骤4
- - 初始化文件
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830144104338.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDM0MDEyOQ==,size_16,color_FFFFFF,t_70#pic_center)
-
-## 2.1.4 Servlet 生命周期
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830152834724.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDM0MDEyOQ==,size_16,color_FFFFFF,t_70#pic_center)
-
-
-
-
-
-
-
 
 
 
