@@ -12,18 +12,22 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-<!--    &lt;!&ndash; 配置自定义的 Servlet &ndash;&gt;-->
-<!--    <servlet>-->
-<!--        <servlet-name>Hello1</servlet-name>-->
-<!--        <servlet-class>Servlet.HelloServlet1</servlet-class>-->
-<!--    </servlet>-->
+    <!-- 配置自定义的Servlet，需要2部分内容  第一部分：-->
+    <servlet>
+        <!-- Servlet 定义的名称与 HelloServlet1.java 中的类 HelloServlet1 对应 -->
+        <servlet-name>Hello1</servlet-name>
 
-<!--    &lt;!&ndash; Servlet 访问方式的映射，Servlet 的访问方式 &ndash;&gt;-->
-<!--    <servlet-mapping>-->
-<!--        <servlet-name>Hello1</servlet-name>-->
+        <!-- 写入上方所对应的名称所对应的类的名称，详细包名，具有对应关系，声明 Servlet.HelloServlet1 为 Servlet 文件 -->
+        <servlet-class>Servlet.HelloServlet1</servlet-class>
+    </servlet>
 
-<!--        &lt;!&ndash; 上面 Servlet 的访问方式，即 Hello1 &ndash;&gt;-->
-<!--        <url-pattern>hello1</url-pattern>-->
-<!--    </servlet-mapping>-->
+    <!-- Servlet 访问方式的映射：哪个Servlet需要用什么样的方式来访问  第二部分：-->
+    <servlet-mapping>
+        <!-- servlet-name 与上方 servlet-name 标签中的相同 -->
+        <servlet-name>Hello1</servlet-name>
+
+        <!-- 定义用什么样的访问方式来访问上面的 servlet（He1lo1），访问方式：http://localhost:8080/web_war_exploded/hello1 -->
+        <url-pattern>/hello1</url-pattern>
+    </servlet-mapping>
 
 </web-app>
