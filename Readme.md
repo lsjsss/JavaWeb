@@ -164,3 +164,40 @@ asyncSupported | boolean | 声明Servlet是否支持异步操作模式，默认�
 description | String | 指定该Servlet的描述信息
 displayName | String | 指定该Servlet的显示名，通常配合工具使用
 
+
+## 2.1.3 创建一个 Servlet 文件
+ - 步骤1
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830143228866.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDM0MDEyOQ==,size_16,color_FFFFFF,t_70#pic_center)
+
+ - 步骤2
+Java package：包名
+Class name：类名
+Superclass：使用的父类
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830143521371.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDM0MDEyOQ==,size_16,color_FFFFFF,t_70#pic_center)
+
+ - 步骤3
+Name：Servlet 名称（别名或代号）
+Description：描述
+URL mappings：访问方式
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2020083014381629.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDM0MDEyOQ==,size_16,color_FFFFFF,t_70#pic_center)
+
+ - 步骤4
+ - 初始化文件
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830144104338.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDM0MDEyOQ==,size_16,color_FFFFFF,t_70#pic_center)
+
+## 2.1.4 Servlet 生命周期
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830152834724.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDM0MDEyOQ==,size_16,color_FFFFFF,t_70#pic_center)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
