@@ -125,7 +125,7 @@ Serlvet 功能：
 	 - **GenericServlet抽象类**：与 Servlet 接口基本相同，只是为了是使用方便，做成抽象类的形式。
 	 - **Javax.servlet.http.HttpServlet**：抽象类，能够处理 HTTP 请求的 servlet，它在原有 Servlet 接口上添加了对 HTTP 协议的处理，它比Servlet接口的功能更为强大。**用户编写的 Servlet 类多数基于该抽象类**。
 	 - 方法：
-		 - **service(HttpServletRequest req, HttpServletResponse resp)**：:重写了 **Servlet接口** 的 service() 方法，该方法会自动判断用户的请求方式;若为 **GET** 请求，则调用 HttpServlet的doGet() 方法;若为 **POST** 晴求，则调用 doPost() 方法。
+		 - **service(HttpServletRequest req, HttpServletResponse resp)**：重写了 **Servlet接口** 的 service() 方法，该方法会自动判断用户的请求方式;若为 **GET** 请求，则调用 HttpServlet的doGet() 方法;若为 **POST** 晴求，则调用 doPost() 方法。
 		- **doGet(HttpServletRequest req,HttpServletResponse resp)**：此方法被本类的 service() 方法调用，用来处理一个 HTTP GET 操作。
 		- **doPost(HttpServletRequest req,HttpServletResponse resp)**：此方法被本类的 service() 方法调用，用来处理一个 HTTP POST 操作。
  - javax.servlet.http 包
