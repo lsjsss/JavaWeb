@@ -1,5 +1,4 @@
 > 本文约 7066 字，阅读大约需要 21 分钟（持续更新）
-
 # Java Web 程序设计 课堂笔记 | Java Web
 
 ---
@@ -402,7 +401,7 @@ public class XXServlet extends HttpServlet {
 ……
 ```
 
-##### 3. 发送请求的两种地址形式：
+##### 3. 发送请求的两种地址形式
  - 绝对地址：http://localhost:8080/chapter02/
  - 相对地址（相对于当前的页面或相对于当前的 Servlet）：LinkRequestServlet、../LinkRequestServlet
 
@@ -444,7 +443,40 @@ public class XXServlet extends HttpServlet {
 </form>
 ```
 
- ##### 3.文件结构及源代码（实例）
+##### 3. 注意
+ - form 中需要注意的问题（两个属性）：
+	- **method**:请求提交的方式是get还是**post**
+	- **action**：指定的是由谁来处理这个请求，一般action要指定一个servlet的地址，**表单提交地址**
+	- 表单中的标签如果需要气象服务端提交数据，则必须有 **name** 属性，或者说后台获取的数据就是通过表单的 **name** 属性提交的，其他的如id属性等等是不能提交数据的。（当获取数据是通过 request.getParameter() 方法实现的时候）
+
+
+ - 在 Servlet 中获取数据的方式与超链接的方式相同，都是通过 HttpServletRequest 对象实现的
+	 - **public String getParameter(String name)**：返回由name指定的用户请求参数的值。
+		```java
+		String pageNo = request.getParameter("pageNo");
+		String queryString = request.getParameter("queryString");
+		```
+	
+	 - **public String[] getParameterValues(String name)**：返回由 name 指定的一组用户请求参数的值。
+		```java
+		String[] favors = request.getParameterValues("favors");
+		```
+		
+	 - **public Enumeration getParameterNames()**：返回所有客户请求的参数名。
+		```java
+		//获取所有表单中参数的名字
+		Enumeration<String>  e= request.getParameterNames();
+		StringBuilder builder = new StringBuilder();
+		while(e.hasMoreElements()) {
+		    String s = e.nextElement();
+		    builder.append(s);
+		    builder.append(",");
+		}
+		System.out.println(builder.toString());
+		```
+
+
+ ##### 4.文件结构及源代码（实例）
 > 目录结构
 
 ```tree
@@ -466,7 +498,7 @@ newProject2
 ---
 > 源代码
 
-FormServlet.java（处理 Form 表单请求数据）
+**FormServlet.java**（处理 Form 表单请求数据）
 ```java
 package com.servlet.c1;
 
@@ -546,7 +578,7 @@ public class FormServlet extends HttpServlet {
 ```
 
 ---
-web.xml
+**web.xml**
 ```html
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
@@ -561,7 +593,7 @@ web.xml
 ```
 
 ---
-index.jsp（默认访问首页）
+**index.jsp**（默认访问首页）
 ```html
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
@@ -581,7 +613,7 @@ index.jsp（默认访问首页）
 ```
 
 ---
-login.jsp（表单提交页面）
+**login.jsp**（表单提交页面）
 ```html
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
@@ -638,13 +670,13 @@ login.jsp（表单提交页面）
 
  - 重定向通过 HttpServletResponse 对象的 sendRedirect() 方法实现
 
-##### 1. 语法格式：
+##### 1. 语法格式
 > 参数 **location**：指定重定向的 URL（所要跳转的页面）
 ```java
 public void sendRedirect(String location)throws java.io.IOException
 ```
 
-##### 2. 示例：
+##### 2. 示例
 > /chapter02/index.jsp：重定向到当前应用程序（chapter02）的根目录下的index.jsp页面
 ```java
 response.sendRedirect("/chapter02/index.jsp");
@@ -673,7 +705,7 @@ response.sendRedirect("/chapter02/index.jsp");
 
  - 请求转发使用 RequestDispatcher 接口中的 forward() 方法来实现，该方法可以把请求转发给另外一个资源，并让该资源对此请求进行响应。
 
-##### 1. 语法格式：
+##### 1. 语法格式
 > **forward() 方法**：将请求转发给其他资源
 > **include() 方法**：将其他资源并入到当前请求中
 
@@ -689,7 +721,7 @@ dispatcher.forward(ServletRequest request,ServletResponse response);
 RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp").forward(request, response);
 ```
 
-##### 3. 目录结构及源代码（实例）：
+##### 3. 目录结构及源代码（实例）
 > 目录结构
 ```tree
 newProject2
@@ -710,7 +742,7 @@ newProject2
 ---
 > 源代码
 
-RedirectServlet.java
+**RedirectServlet.java**
 ```java
 package com.servlet.c1;
 
@@ -749,7 +781,7 @@ public class RedirectServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		String[] favors = request.getParameterValues("favors");
 		
-		// 如果用户是 tom，密码是 1234，者跳转到首页上
+		// 如果用户是 tom，密码是 1234，直接跳转到首页上
 		if(loginName.equals("tom") && password.equals("1234")) {
 			// 重定向方式；"/" 代表应用的根目录；两次请求，两次响应
 			response.sendRedirect("/newProject2/index.jsp");
@@ -763,7 +795,7 @@ public class RedirectServlet extends HttpServlet {
 ```
 
 ---
-web.xml
+**web.xml**
 ```html
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
@@ -778,7 +810,7 @@ web.xml
 ```
 
 ---
-index.jsp（默认访问首页）
+**index.jsp**（默认访问首页）
 ```html
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
@@ -798,7 +830,7 @@ index.jsp（默认访问首页）
 ```
 
 ---
-login.jsp（表单提交页面）
+**login.jsp**（表单提交页面）
 ```html
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
